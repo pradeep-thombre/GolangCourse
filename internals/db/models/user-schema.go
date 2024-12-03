@@ -1,5 +1,7 @@
 package models
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type UserSchema struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
@@ -17,4 +19,15 @@ type TopicSchema struct {
 	Hidden      bool   `json:"isHidden" bson:"isHidden"`
 	CreatedAt   string `json:"createdAt" bson:"createdAt"`
 	UpdatedAt   string `json:"updatedAt" bson:"updatedAt"`
+}
+
+type PageSchema struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty"`
+	TopicID   primitive.ObjectID `bson:"topic_id"`
+	Title     string             `bson:"title"`
+	Content   string             `bson:"content"`
+	CreatedAt string             `bson:"created_at"`
+	UpdatedAt string             `bson:"updated_at"`
+	DeletedAt string             `bson:"deleted_at,omitempty"`
+	Hidden    bool               `bson:"hidden,omitempty"`
 }

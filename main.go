@@ -27,10 +27,15 @@ func main() {
 		logger.Errorf("Error in Appconfig:", err)
 	}
 
+	// Initialize services
 	userDbService := db.NewUserDbService(configs.AppConfig.DbClient)
 	userEventService := services.NewUserEventService(userDbService)
+
 	topicDbService := db.NewTopicDbService(configs.AppConfig.DbClient)
 	topicEventService := services.NewTopicEventService(topicDbService)
+
+	pageDbService := db.NewPageDbService(configs.AppConfig.DbClient)
+	pageEventService := services.NewPageEventService(pageDbService)
 
 	// Echo instance
 	e := echo.New()
@@ -48,6 +53,14 @@ func main() {
 	e.PUT("/topics/:id", topicController.UpdateTopic)
 	e.DELETE("/topics/:id", topicController.DeleteTopic)
 	e.PUT("/topics/:id/hide", topicController.HideTopic)
+
+	pageController := apis.NewPageController(pageEventService)
+	e.GET("/topic/:topicId/pages", pageController.GetPagesByTopicId)
+	e.POST("/topic/:topicId/pages", pageController.CreatePage)
+	e.GET("/topic/:topicId/pages/:id", pageController.GetPageById)
+	e.PATCH("/topic/:topicId/pages/:id", pageController.UpdatePage)
+	e.PATCH("/topic/:topicId/pages/:id/hide", pageController.HidePage)
+	e.DELETE("/topic/:topicId/pages/:id", pageController.DeletePageById)
 
 	// Swagger UI route
 	e.GET("/swagger/*", echoSwagger.WrapHandler)

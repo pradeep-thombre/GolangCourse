@@ -10,4 +10,5 @@ const (
 
 	MONGO_USERS_COLLECTION  = "users"
 	MONGO_TOPICS_COLLECTION = "topics"
+	MONGO_PAGES_COLLECTION  = "pages"
 )
