@@ -19,7 +19,7 @@ type udbservice struct {
 	ucollection appdb.DatabaseCollection
 }
 
-type DbService interface {
+type UserDbService interface {
 	GetUserById(ctx context.Context, id string) (*models.User, error)
 	DeleteUserById(ctx context.Context, id string) error
 	GetUsers(ctx context.Context) ([]*models.User, error)
@@ -27,7 +27,7 @@ type DbService interface {
 	UpdateUser(ctx context.Context, user *dbmodel.UserSchema, userId string) error
 }
 
-func NewUserDbService(dbclient appdb.DatabaseClient) DbService {
+func NewUserDbService(dbclient appdb.DatabaseClient) UserDbService {
 	return &udbservice{
 		ucollection: dbclient.Collection(configs.MONGO_USERS_COLLECTION),
 	}

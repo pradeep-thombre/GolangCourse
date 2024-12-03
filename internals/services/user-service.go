@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 )
 
-type EventService interface {
+type UserEventService interface {
 	GetUserById(context context.Context, userId string) (*models.User, error)
 	DeleteUserById(context context.Context, userId string) error
 	GetUsers(context context.Context) ([]*models.User, error)
@@ -18,12 +18,12 @@ type EventService interface {
 }
 
 type eservice struct {
-	dbservice db.DbService
+	dbservice db.UserDbService
 }
 
-func NewUserEventService(dbservice db.DbService) EventService {
+func NewUserEventService(userDbService db.UserDbService) UserEventService {
 	return &eservice{
-		dbservice: dbservice,
+		dbservice: userDbService,
 	}
 }
 
