@@ -49,10 +49,11 @@ func main() {
 	e.PATCH("/users/:id", userController.UpdateUser)
 
 	topicController := apis.NewTopicController(topicEventService)
-	e.POST("/topics", topicController.CreateTopic)
-	e.PUT("/topics/:id", topicController.UpdateTopic)
-	e.DELETE("/topics/:id", topicController.DeleteTopic)
-	e.PUT("/topics/:id/hide", topicController.HideTopic)
+	e.GET("/topic", topicController.GetAllTopics)
+	e.POST("/topic", topicController.CreateTopic)
+	e.PUT("/topic/:id", topicController.UpdateTopic)
+	e.DELETE("/topic/:id", topicController.DeleteTopic)
+	e.PUT("/topic/:id/hide", topicController.HideTopic)
 
 	pageController := apis.NewPageController(pageEventService)
 	e.GET("/topic/:topicId/pages", pageController.GetPagesByTopicId)

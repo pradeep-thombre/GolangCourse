@@ -130,7 +130,7 @@ func (p *pcontroller) CreatePage(c echo.Context) error {
 		logger.Error("'title' is required")
 		return c.JSON(http.StatusBadRequest, commons.ApiErrorResponse("'title' is required", nil))
 	}
-	if len(strings.TrimSpace(page.Content)) == 0 {
+	if page.Content != nil {
 		logger.Error("'content' is required")
 		return c.JSON(http.StatusBadRequest, commons.ApiErrorResponse("'content' is required", nil))
 	}
@@ -175,7 +175,7 @@ func (p *pcontroller) UpdatePage(c echo.Context) error {
 		logger.Error("'title' is required")
 		return c.JSON(http.StatusBadRequest, commons.ApiErrorResponse("'title' is required", nil))
 	}
-	if len(strings.TrimSpace(page.Content)) == 0 {
+	if page.Content != nil {
 		logger.Error("'content' is required")
 		return c.JSON(http.StatusBadRequest, commons.ApiErrorResponse("'content' is required", nil))
 	}

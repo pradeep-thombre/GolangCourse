@@ -17,7 +17,7 @@ type Topic struct {
 	Name        string `json:"name" bson:"name"`
 	Description string `json:"description" bson:"description"`
 	Position    int    `json:"position" bson:"position"`
-	Hidden      bool   `json:"hidden" bson:"hidden"`
+	Hidden      bool   `json:"isHidden" bson:"isHidden"`
 	CreatedAt   string `json:"createdAt" bson:"createdAt"`
 	UpdatedAt   string `json:"updatedAt" bson:"updatedAt"`
 }

@@ -11,6 +11,7 @@ import (
 )
 
 type TopicEventService interface {
+	GetAllTopics(ctx context.Context) ([]models.Topic, error)
 	CreateTopic(context context.Context, topic *models.Topic) (string, error)
 	UpdateTopic(context context.Context, topicID string, topic *models.Topic) error
 	DeleteTopic(context context.Context, topicID string) error
@@ -122,4 +123,20 @@ func (t *topicService) HideTopic(context context.Context, topicID string) error 
 
 	logger.Infof("Executed HideTopic, topicID: %s", topicID)
 	return nil
+}
+
+// GetAllTopics retrieves all topics from the database
+func (t *topicService) GetAllTopics(ctx context.Context) ([]models.Topic, error) {
+	logger := apploggers.GetLoggerWithCorrelationid(ctx)
+	logger.Info("Executing GetAllTopics")
+
+	// Fetch all topics from the database using the topicDbService
+	topics, err := t.topicDbService.GetAllTopics(ctx)
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
+
+	logger.Infof("Executed GetAllTopics, found %d topics", len(topics))
+	return topics, nil
 }

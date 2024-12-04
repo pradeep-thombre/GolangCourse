@@ -20,6 +20,7 @@ type topicDbService struct {
 }
 
 type TopicDbService interface {
+	GetAllTopics(ctx context.Context) ([]models.Topic, error)
 	GetTopicById(ctx context.Context, id string) (*models.Topic, error)
 	DeleteTopicById(ctx context.Context, id string) error
 	GetTopics(ctx context.Context) ([]*models.Topic, error)
@@ -144,7 +145,7 @@ func (t *topicDbService) HideTopic(ctx context.Context, topicId string) error {
 		return fmt.Errorf("cannot hide topic, invalid topicId provided, topicId: %s", topicId)
 	}
 	var filter = bson.M{"_id": id}
-	update := bson.M{"$set": bson.M{"hidden": true}} // Set the hidden flag to true
+	update := bson.M{"$set": bson.M{"isHidden": true}} // Set the hidden flag to true
 	// Update topic in db
 	_, dbError := t.tcollection.UpdateOne(ctx, filter, update)
 	if dbError != nil {
@@ -154,4 +155,22 @@ func (t *topicDbService) HideTopic(ctx context.Context, topicId string) error {
 
 	logger.Infof("Executed HideTopic, topicId: %s", topicId)
 	return nil
+}
+
+// GetAllTopics retrieves all topics from the database
+func (t *topicDbService) GetAllTopics(ctx context.Context) ([]models.Topic, error) {
+	logger := apploggers.GetLoggerWithCorrelationid(ctx)
+	logger.Info("Fetching all topics from the database")
+
+	var topics []models.Topic
+	// Query the database to retrieve all topics
+	filter := bson.M{} // Empty filter to fetch all topics
+	err := t.tcollection.Find(ctx, filter, &options.FindOptions{}, &topics)
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
+
+	logger.Infof("Found %d topics in the database", len(topics))
+	return topics, nil
 }

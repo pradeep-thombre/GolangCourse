@@ -169,11 +169,14 @@ func (p *pageService) GetPageById(ctx context.Context, topicID string, pageID st
 
 	// Convert dbmodel.PageSchema to models.Page
 	page := &models.Page{
-		ID:      pageSchema.ID,
-		Title:   pageSchema.Title,
-		Content: pageSchema.Content,
-		TopicID: pageSchema.TopicID.Hex(),
-		// add other fields...
+		ID:        pageSchema.ID,
+		Title:     pageSchema.Title,
+		Content:   pageSchema.Content,
+		TopicID:   pageSchema.TopicID.Hex(),
+		CreatedAt: pageSchema.CreatedAt,
+		UpdatedAt: pageSchema.UpdatedAt,
+		DeletedAt: pageSchema.DeletedAt,
+		Hidden:    pageSchema.Hidden,
 	}
 
 	logger.Infof("Executed GetPageById, page: %s", pageID)
@@ -201,11 +204,14 @@ func (p *pageService) GetPagesByTopicId(ctx context.Context, topicID string) ([]
 	var pages []*models.Page
 	for _, pageSchema := range pageSchemas {
 		page := &models.Page{
-			ID:      pageSchema.ID,
-			Title:   pageSchema.Title,
-			Content: pageSchema.Content,
-			TopicID: pageSchema.TopicID.Hex(),
-			// add other fields...
+			ID:        pageSchema.ID,
+			Title:     pageSchema.Title,
+			Content:   pageSchema.Content,
+			TopicID:   pageSchema.TopicID.Hex(),
+			CreatedAt: pageSchema.CreatedAt,
+			UpdatedAt: pageSchema.UpdatedAt,
+			DeletedAt: pageSchema.DeletedAt,
+			Hidden:    pageSchema.Hidden,
 		}
 		pages = append(pages, page)
 	}

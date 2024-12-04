@@ -17,11 +17,12 @@ type Page struct {
 	ID        primitive.ObjectID `json:"id"`
 	TopicID   string             `json:"topic_id"`
 	Title     string             `json:"title"`
-	Content   string             `json:"content"`
+	Type      string             `json:"type"`
+	Content   interface{}        `json:"content"`
 	CreatedAt string             `json:"created_at"`
 	UpdatedAt string             `json:"updated_at"`
 	DeletedAt string             `json:"deleted_at,omitempty"`
-	Hidden    string             `json:"isHidden"`
+	Hidden    bool               `json:"isHidden"`
 }
 
 // NotesContent represents the content of a notes page.
@@ -32,9 +33,10 @@ type NotesContent struct {
 
 // MCQContent represents the content of a multiple-choice question page.
 type MCQContent struct {
-	Question string   `json:"question"`
-	Options  []string `json:"options"`
-	Correct  int      `json:"correct"` // The index of the correct answer
+	Question string        `json:"question"`
+	Image    string        `json:"image"`
+	Options  []interface{} `json:"options"`
+	Correct  int           `json:"correct"`
 }
 
 // YouTubeContent represents the content of a YouTube video page.
@@ -45,6 +47,7 @@ type YouTubeContent struct {
 
 // CodingContent represents the content of a coding problem page.
 type CodingContent struct {
-	ProblemStatement string   `json:"problem_statement"`
-	TestCases        []string `json:"test_cases"` // List of test cases
+	ProblemStatement  string   `json:"problem_statement"`
+	TestCases         []string `json:"test_cases"`
+	SolutionTestCases []string `json:"solutions"`
 }

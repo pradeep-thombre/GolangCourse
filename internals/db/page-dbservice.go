@@ -84,17 +84,11 @@ func (p *pageDbService) GetPagesByTopicId(ctx context.Context, topicID string) (
 	logger := apploggers.GetLoggerWithCorrelationid(ctx)
 	logger.Infof("Executing GetPagesByTopicId, topicID: %s", topicID)
 
-	// Convert topicID to ObjectID
-	topicObjID, err := primitive.ObjectIDFromHex(topicID)
-	if err != nil {
-		return nil, fmt.Errorf("invalid topicID provided, topicID: %s", topicID)
-	}
-
 	var pages []*models.PageSchema
-	filter := bson.M{"topic_id": topicObjID}
+	filter := bson.M{"topic_id": topicID}
 
 	// Using Find with proper options (nil in this case is fine for simple queries)
-	err = p.pcollection.Find(ctx, filter, &options.FindOptions{}, &pages)
+	err := p.pcollection.Find(ctx, filter, &options.FindOptions{}, &pages)
 	if err != nil {
 		logger.Error(err)
 		return nil, err
@@ -159,7 +153,7 @@ func (p *pageDbService) HidePage(ctx context.Context, pageID string) error {
 
 	// Update page to set "hidden" flag to true
 	filter := bson.M{"_id": id}
-	update := bson.M{"$set": bson.M{"hidden": true}}
+	update := bson.M{"$set": bson.M{"isHidden": true}}
 	_, err = p.pcollection.UpdateOne(ctx, filter, update)
 	if err != nil {
 		logger.Error(err)

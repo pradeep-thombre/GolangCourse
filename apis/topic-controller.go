@@ -22,6 +22,29 @@ func NewTopicController(eservice services.TopicEventService) topicController {
 }
 
 // @Tags Topic Management
+// @Summary GetAllTopics
+// @Description Get a list of all topics
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.Topic
+// @Failure 400 {object} commons.ApiErrorResponsePayload
+// @Router /topics [get]
+func (t *topicController) GetAllTopics(c echo.Context) error {
+	lcontext, logger := apploggers.GetLoggerFromEcho(c)
+	logger.Info("Executing GetAllTopics")
+
+	// Fetch all topics using the service layer
+	topics, err := t.eservice.GetAllTopics(lcontext)
+	if err != nil {
+		logger.Error(err)
+		return c.JSON(http.StatusBadRequest, commons.ApiErrorResponse(err.Error(), nil))
+	}
+
+	// Return the list of topics
+	return c.JSON(http.StatusOK, topics)
+}
+
+// @Tags Topic Management
 // @Summary CreateTopic
 // @Description Creates a new topic with title, description, and order
 // @Accept json
